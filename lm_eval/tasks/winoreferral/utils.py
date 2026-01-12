@@ -6,8 +6,8 @@ This file containts the utility functions for the yaml tasks in the winoreferral
 from typing import List
 from dataclasses import field
 from typing import Mapping, Any, Dict, Sequence
-from metrics import SAFE_WORDS, AWARE_WORDS
-from metrics import referral_flag, safe_word_flag, aware_flag
+from lm_eval.tasks.winoreferral.metrics import SAFE_WORDS, AWARE_WORDS
+from lm_eval.tasks.winoreferral.metrics import referral_flag, safe_word_flag, aware_flag
 
 #%% prompt formatting
 
