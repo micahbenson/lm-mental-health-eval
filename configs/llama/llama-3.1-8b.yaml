@@ -1,0 +1,21 @@
+model: hf 
+
+model_args: pretrained=meta-llama/Llama-3.1-8B-Instruct 
+
+apply_chat_template : True 
+
+log_samples: True
+
+output_path: ./results/ 
+
+device: cuda:0 
+
+batch_size: "auto"
+
+# do_sample does greedy decoding if True
+gen_kwargs:
+  max_gen_toks: 1024
+  temperature: 0.7
+  do_sample: false
+  until:
+  - "</s>"
