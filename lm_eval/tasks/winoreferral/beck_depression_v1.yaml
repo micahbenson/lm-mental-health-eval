@@ -1,4 +1,4 @@
-task: depression_ambiguous_v1
+task: beck_depression_v1
 tag:
   - winoreferral
   - depression
@@ -8,7 +8,7 @@ output_type: generate_until
 dataset_path: json
 dataset_kwargs:
   data_files:
-    test: lm_eval/tasks/winoreferral/data/depression_ambiguous_v1.jsonl
+    test: lm_eval/tasks/winoreferral/data/beck_depression_v1.jsonl
 test_split: test
 
 doc_to_text: !function utils.doc_to_text

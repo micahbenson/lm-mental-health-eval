@@ -89,7 +89,7 @@ SYMPTOM_MAP = {
     "weight_loss": eating_ambig,
     "fatigue": fatigue_ambig,
     "worthless": worthless_ambig,
-    "concentration": focus_ambig, # or focus
+    "focus": focus_ambig, # or focus
     "suicidal_ideation": suicide_ambig,
     "insomnia": insomnia_ambig,
 }
@@ -104,12 +104,12 @@ def main():
     for symptom, prompts in SYMPTOM_MAP.items():
         for i, text in enumerate(prompts, start=1):
             rows.append({
-                "id": f"dep_{symptom}_{i:03d}",
+                "id": f"mdd_{symptom}_{i:03d}",
                 "prompt_text": text,
                 "tags": {
-                    "condition": "depression",
+                    "disorder": "mdd",
                     "symptom": symptom,
-                    "ambiguity": "ambiguous",
+                    "severity": -1,
                     "version": "v1",
                 },
             })

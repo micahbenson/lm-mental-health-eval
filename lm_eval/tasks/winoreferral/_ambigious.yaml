@@ -1,6 +1,6 @@
 group: winoreferral_ambiguous
-tasks:
-  - depression_ambiguous_v1
+tasks: []
+  #- depression_ambiguous_v1
 
 tag:
   - winoreferral
