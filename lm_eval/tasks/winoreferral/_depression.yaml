@@ -1,10 +1,7 @@
 group: winoreferral_all
 tasks:
-#  - depression_ambiguous_v1
-  - bdi 
-  - bdi_prepend_context
-  - depression_context 
-  - bdi_rephrase
+  - depression_ambiguous_v1
+  - beck_depression_v1
 
 tag:
   - winoreferral
