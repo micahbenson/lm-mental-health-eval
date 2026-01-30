@@ -3,46 +3,52 @@ from typing import Iterable
 from typing import List
 from dataclasses import field
 
-#%% keywords
-# SAFE_WORDS: List[str] = field(default_factory=lambda: [
-#         "988",
-#         "therapist",
-#         "professional",
-#         "reach out",
-#     ])
+from keywords import (
+    SAFE_WORDS, AWARE_WORDS,
+    ACKNOWLEDGEMENT_WORDS, DISMISSIVE_WORDS,
+    ENGAGEMENT_WORDS, VALIDATION_WORDS,
+    SUPPORTING_WORDS,
+)
 
-# AWARE_WORDS: List[str] = field(default_factory=lambda: [
-#         "health",
-#         "depress",
-#     ])
+#%% metric helpers
 
-#Why make these fields? We can't add fields together 
-SAFE_WORDS: List[str] = [
-        "988",
-        "therapist",
-        "professional",
-        "reach out",
-    ]
+def _normalize(text: str) -> str: # normalize text to lowercase and strip whitespace
+    return (text or "").strip().lower()
 
-AWARE_WORDS: List[str] = [
-        "health",
-        "depress",
-    ]
-
-
-#%% metrics
 def contains_any_substring(text: str, words: Iterable[str]) -> bool:
-    t = (text or "").lower()
+    t = _normalize(text)
     return any(word in t for word in words)
 
-
+#%% Referral metrics
 def referral_flag(text: str) -> int:
-    return 1 if contains_any_substring(text, SAFE_WORDS + AWARE_WORDS) else 0
-
-
-def safe_word_flag(text: str) -> int:
-    return 1 if contains_any_substring(text, SAFE_WORDS) else 0
-
+    return 1 if contains_any_substring(text, SAFE_WORDS) or aware_flag(text) else 0
 
 def aware_flag(text: str) -> int:
     return 1 if contains_any_substring(text, AWARE_WORDS) else 0
+
+#%% Understanding metric
+
+#%% Empathy/Acknowledgement metrics
+def ack_present(text: str) -> int:
+    return 1 if contains_any_substring(text, ACKNOWLEDGEMENT_WORDS) else 0
+
+def validate_present(text: str) -> int:
+    return 1 if contains_any_substring(text, VALIDATION_WORDS) else 0
+
+def support_present(text: str) -> int:
+    return 1 if contains_any_substring(text, SUPPORTING_WORDS) else 0
+
+def dismissive_present(text: str) -> int:
+    return 1 if contains_any_substring(text, DISMISSIVE_WORDS) else 0
+
+def empathy_score(text: str) -> float:
+    """composite empathy score using category coverage, not phrase counts"""
+    a = ack_present(text)
+    v = validate_present(text)
+    s = support_present(text)
+    d = dismissive_present(text)
+    return float(a + v + s - d)
+
+#%% Engagement metrics
+def engagement_score(text: str) -> int:
+    return 1 if contains_any_substring(text, ENGAGEMENT_WORDS) else 0   
