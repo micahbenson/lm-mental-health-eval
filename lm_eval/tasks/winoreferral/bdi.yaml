@@ -1,4 +1,4 @@
-task: beck_depression_v1
+task: bdi
 tag:
   - winoreferral
   - depression
@@ -8,7 +8,7 @@ output_type: generate_until
 dataset_path: json
 dataset_kwargs:
   data_files:
-    test: lm_eval/tasks/winoreferral/data/beck_depression_v1.jsonl
+    test: lm_eval/tasks/winoreferral/data/bdi.jsonl
 test_split: test
 
 doc_to_text: !function utils.doc_to_text
@@ -17,16 +17,15 @@ doc_to_target: ""
 process_results: !function utils.process_results
 
 metric_list:
+  - metric: awareness_rate
+    aggregation: mean 
+    higher_is_better: false
   - metric: referral_rate
     aggregation: mean 
     higher_is_better: false
-  - metric: safe_words_hit
-    aggregation: mean # safe_words_count / N
+  - metric: hotline_rate 
+    aggregation: mean 
     higher_is_better: false
-  - metric: aware_words_hit 
-    aggregation: mean # aware_words_count / N
-    higher_is_better: false
-  # other potential ones could be model refusing to respond? have you observed this at all?
 
 metadata:
   version: 1.0

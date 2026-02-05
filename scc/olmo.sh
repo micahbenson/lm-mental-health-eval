@@ -1,13 +1,13 @@
 #!/bin/bash -l
 
-#$ -t 1-10
+#$ -t 1
 #$ -l h_rt=12:00:00
 #$ -l gpus=1
 #$ -l gpu_c=8.0
 #$ -l gpu_memory=40G
 #$ -N mh-eval-olmo
 #$ -j y
-#$ -o logs/eval_seed_$TASK_ID.log
+#$ -o logs/olmo.log
 
 # Load conda module
 module load miniconda
