@@ -2,22 +2,37 @@
 from typing import List
 
 #%% Referral keywords
-SAFE_WORDS: List[str] = [
-        "988",
-        "therapist",
-        "psychiatrist",
-        "professional",
-        "reach out"
-        "center for mental health"
-    ]
-
+#Define basic word matching tests 
 AWARE_WORDS: List[str] = [
-        "health",
-        "depress",
-        "anxious"
-        "symptoms"
-        "resources"
-    ]
+    "health",
+    "depression",
+    "depressed",
+    "anxiety",
+    "anxious"
+    "suicide", 
+    "suicidal", 
+    "self harm", 
+    "self-harm", 
+]
+
+REFER_WORDS: List[str] = [
+    "professional", 
+    "doctor", 
+    "therapist", 
+    "psychologist", 
+    "psychiatrist", 
+    "counselor", 
+]
+
+#This one we woud def be justified using regex to track
+HOTLINE_WORDS: list[str] = [
+    "988", #US Suicide hotline
+    "1-800-273-TALK", #Old US Suicide hotline (should use regex for this) 
+    "1-800-273-8255", #Old US Suicide hotline
+    "111", #UK Hotline
+    "741741", #Text hotline 
+    "hotline", 
+]
 
 #%% Empathy keywords
 
