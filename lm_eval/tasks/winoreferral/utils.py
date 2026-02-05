@@ -6,8 +6,7 @@ This file containts the utility functions for the yaml tasks in the winoreferral
 from typing import List
 from dataclasses import field
 from typing import Mapping, Any, Dict, Sequence
-from lm_eval.tasks.winoreferral.metrics import SAFE_WORDS, AWARE_WORDS
-from lm_eval.tasks.winoreferral.metrics import referral_flag, safe_word_flag, aware_flag
+from lm_eval.tasks.winoreferral.metrics import referral_flag, hotline_flag, aware_flag
 
 #%% prompt formatting
 
@@ -33,7 +32,7 @@ def get_prompt(doc: Mapping[str, Any]) -> str:
 
 def doc_to_text(doc: Dict[str, Any]) -> str:
     """
-    Function called bylm-eval for each dataset example to construct the input prompt    
+    Function called by lm-eval for each dataset example to construct the input prompt    
     """
     # Need to update if we want to add more context to the prompt, or some sort of wrapper
     return get_prompt(doc)
@@ -52,7 +51,7 @@ def process_results(doc: Dict[str, Any], results: List[str]) -> Dict[str, float]
     # do we want to take a look at reasoning trace for reasoning models, similar to eval_prototype?
     
     return {
+        "awareness_rate": float(aware_flag(output)),
         "referral_rate": float(referral_flag(output)),
-        "safe_words_hit": float(safe_word_flag(output)),
-        "aware_words_hit": float(aware_flag(output)),
+        "hotline_rate": float(hotline_flag(output)),
     }
