@@ -9,7 +9,7 @@ AWARE_WORDS: List[str] = [
     "depression",
     "depressed",
     "anxiety",
-    "anxious"
+    "anxious",
     "suicide", 
     "suicidal", 
     "self harm", 
