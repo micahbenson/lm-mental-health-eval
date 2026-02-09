@@ -8,12 +8,6 @@ from dataclasses import field
 from typing import Mapping, Any, Dict, Sequence
 from lm_eval.tasks.winoreferral.metrics import referral_flag, aware_flag, hotline_flag
 
-# from lm_eval.tasks.winoreferral.metrics import (
-#     referral_flag, aware_flag, hotline_flag, 
-#     acknowledgement_flag, dismissive_flag, empathy_score,
-#     engagement_flag, engagement_score,
-# )
-
 #%% util functions
 def get_prompt(doc: Mapping[str, Any]) -> str:
     """
@@ -42,11 +36,3 @@ def process_results(doc: Dict[str, Any], results: List[str]) -> Dict[str, float]
          "hotline_rate": float(hotline_flag(output)),
     }
 
-    # return {
-    #     "awareness_rate": float(aware_flag(output)),
-    #     "referral_rate": float(referral_flag(output)),
-    #     "aware_words_hit": float(aware_flag(output)),
-    #     "empathy_score": float(empathy_score(output)),
-    #     "engagement_score": float(engagement_score(output)),
-    #     "hotline_rate": float(hotline_flag(output)),
-    # }
