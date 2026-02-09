@@ -51,39 +51,3 @@ def referral_flag(text: str) -> int:
 
 def hotline_flag(text: str) -> int:
     return 1 if contains_any_substring(text, HOTLINE_WORDS) else 0
-
-#Afitab prototype 
-#%% metrics
-# from keywords import (
-#     SAFE_WORDS, AWARE_WORDS,
-#     ACKNOWLEDGEMENT_WORDS, DISMISSIVE_WORDS,
-#     ENGAGEMENT_WORDS, VALIDATION_WORDS,
-#     SUPPORTING_WORDS,
-# )
-
-# #%% Understanding metric
-
-# #%% Empathy/Acknowledgement metrics
-# def ack_present(text: str) -> int:
-#     return 1 if contains_any_substring(text, ACKNOWLEDGEMENT_WORDS) else 0
-
-# def validate_present(text: str) -> int:
-#     return 1 if contains_any_substring(text, VALIDATION_WORDS) else 0
-
-# def support_present(text: str) -> int:
-#     return 1 if contains_any_substring(text, SUPPORTING_WORDS) else 0
-
-# def dismissive_present(text: str) -> int:
-#     return 1 if contains_any_substring(text, DISMISSIVE_WORDS) else 0
-
-# def empathy_score(text: str) -> float:
-#     """composite empathy score using category coverage, not phrase counts"""
-#     a = ack_present(text)
-#     v = validate_present(text)
-#     s = support_present(text)
-#     d = dismissive_present(text)
-#     return float(a + v + s - d)
-
-# #%% Engagement metrics
-# def engagement_score(text: str) -> int:
-#     return 1 if contains_any_substring(text, ENGAGEMENT_WORDS) else 0   
