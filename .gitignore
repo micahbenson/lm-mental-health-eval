@@ -49,3 +49,5 @@ examples/wandb/
 
 #uv
 uv.lock
+
+lm_eval/tasks/winoreferral/scripts/visuals/beck_depression_v1_referral_rate_sem 3.png
