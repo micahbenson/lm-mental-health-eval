@@ -19,6 +19,7 @@ gen_kwargs:
   temperature: 0.7
   top_p: 0.9
   do_sample: True
+  max_new_tokens: 2047
   until:
   - "</s>"
   - "<|im_end|>"

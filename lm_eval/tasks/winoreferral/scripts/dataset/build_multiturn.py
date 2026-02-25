@@ -1,17 +1,14 @@
 import pandas as pd
 import json
 
-def expand_dataset_with_context(input_jsonl, context_jsonl, output_jsonl):
+def expand_dataset_with_context(input_jsonl, context_csv, output_jsonl):
     """
     Expand each item in the dataset by prepending each context from CSV.
     Uses actual column names for tagging.
     """
     # Read context CSV
     context_df = pd.read_csv(context_csv)
-    
-    # Verify dimensions
-    assert len(context_df.columns) == 3, f"Expected 3 columns, got {len(context_df.columns)}"
-    
+
     print(f"Context columns: {list(context_df.columns)}")
     print(f"Context shape: {context_df.shape}")
     
@@ -32,12 +29,12 @@ def expand_dataset_with_context(input_jsonl, context_jsonl, output_jsonl):
                 
                 # Create new item
                 new_item = {
-                    "id": f"{original_item['id']}_ctx_r{row_idx}_{col_name}",
+                    "id": f"{original_item['id']}_c{row_idx}_{col_name}",
                     "prompt_text": f"{context_text} \n {original_item['prompt_text']}",
                     "tags": {
                         **original_item['tags'],  # Copy all original tags
-                        "context_row": int(row_idx),
-                        "context_column": col_name
+                        "context_id": row_idx,
+                        "context_type": col_name
                     }
                 }
                 
@@ -54,9 +51,9 @@ def expand_dataset_with_context(input_jsonl, context_jsonl, output_jsonl):
     return expanded_items
 
 # Usage
-input_jsonl = "./beck_depression_v1.jsonl"
-context_csv = "./eval_data/context.csv"
-output_jsonl = "./eval_data/beck_context.jsonl"
+input_jsonl = "lm_eval/tasks/winoreferral/data/bdi_rephrase.jsonl"
+context_csv = "lm_eval/tasks/winoreferral/data/context.csv"
+output_jsonl = "lm_eval/tasks/winoreferral/data/bdi_context.jsonl"
 
 expand_dataset_with_context(input_jsonl, context_csv, output_jsonl)
 print(f"Expanded dataset saved to {output_jsonl}")

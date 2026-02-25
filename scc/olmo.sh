@@ -7,7 +7,7 @@
 #$ -l gpu_memory=40G
 #$ -N mh-eval-olmo
 #$ -j y
-#$ -o logs/olmo.log
+#$ -o logs/olmo_context.log
 
 # Load conda module
 module load miniconda
@@ -24,5 +24,6 @@ export HF_HOME="/projectnb/ivc-ml/micahb/.cache/huggingface"
 # Run evaluation
 python lm_eval run \
     --config 'configs/olmo/olmo-3-7b.yaml' \
-    --tasks winoreferral \
+    --tasks 'bai_rephrase' \
+    --include_path './winoreferral' \
     --seed $SGE_TASK_ID

@@ -24,5 +24,6 @@ export HF_HOME="/projectnb/ivc-ml/micahb/.cache/huggingface"
 # Run evaluation
 python lm_eval run \
     --config 'configs/llama/llama-3.1-8b.yaml' \
-    --tasks winoreferral \
+    --tasks 'bai_rephrase' \
+    --include_path './winoreferral' \
     --seed $SGE_TASK_ID

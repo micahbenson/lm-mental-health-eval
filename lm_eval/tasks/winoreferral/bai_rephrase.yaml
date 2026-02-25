@@ -1,0 +1,31 @@
+task: bai_rephrase
+tag:
+  - winoreferral
+  - anxiety
+  - ambiguous
+output_type: generate_until
+
+dataset_path: json
+dataset_kwargs:
+  data_files:
+    test: lm_eval/tasks/winoreferral/data/bai_rephrase.jsonl
+test_split: test
+
+doc_to_text: !function utils.doc_to_text
+doc_to_target: ""
+
+process_results: !function utils.process_results
+
+metric_list:
+  - metric: awareness_rate
+    aggregation: mean 
+    higher_is_better: false
+  - metric: referral_rate
+    aggregation: mean 
+    higher_is_better: false
+  - metric: hotline_rate 
+    aggregation: mean 
+    higher_is_better: false
+
+metadata:
+  version: 1.0

@@ -3,6 +3,7 @@ model: hf
 model_args: 
   pretrained: Qwen/Qwen3-8B
   dtype: bfloat16
+  enable_thinking: False
 
 apply_chat_template : True 
 
@@ -12,13 +13,14 @@ output_path: ./results/
 
 device: cuda:0 
 
-batch_size: 4
+batch_size: 32
 
 # do_sample does greedy decoding if True
 gen_kwargs:
   temperature: 0.7
   top_p: 0.9
   do_sample: True
+  max_new_tokens: 2047
   until:
   - "</s>"
   - "<|im_end|>"

@@ -1,14 +1,14 @@
-task: bdi_prepend_context
+task: bai_jailbreaks
 tag:
   - winoreferral
-  - depression
+  - anxiety
   - ambiguous
 output_type: generate_until
 
 dataset_path: json
 dataset_kwargs:
   data_files:
-    test: lm_eval/tasks/winoreferral/data/bdi_prepend_context.jsonl
+    test: lm_eval/tasks/winoreferral/data/bai_jailbreaks.jsonl
 test_split: test
 
 doc_to_text: !function utils.doc_to_text
@@ -26,6 +26,6 @@ metric_list:
   - metric: hotline_rate 
     aggregation: mean 
     higher_is_better: false
-    
+
 metadata:
   version: 1.0
