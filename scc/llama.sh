@@ -7,7 +7,7 @@
 #$ -l gpu_memory=40G
 #$ -N mh-eval-llama
 #$ -j y
-#$ -o logs/llama.log
+#$ -o logs/llama_bai.log
 
 # Load conda module
 module load miniconda
@@ -24,6 +24,6 @@ export HF_HOME="/projectnb/ivc-ml/micahb/.cache/huggingface"
 # Run evaluation
 python lm_eval run \
     --config 'configs/llama/llama-3.1-8b.yaml' \
-    --tasks 'bai_rephrase' \
+    --tasks 'bai_jailbreaks' \
     --include_path './winoreferral' \
     --seed $SGE_TASK_ID

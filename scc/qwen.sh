@@ -7,7 +7,7 @@
 #$ -l gpu_memory=40G
 #$ -N mh-eval-qwen
 #$ -j y
-#$ -o logs/qwen.log
+#$ -o logs/qwen_bai.log
 
 # Load conda module
 module load miniconda
@@ -24,6 +24,6 @@ export HF_HOME="/projectnb/ivc-ml/micahb/.cache/huggingface"
 # Run evaluation
 python lm_eval run \
     --config 'configs/qwen/qwen3-8b.yaml' \
-    --tasks 'bai_rephrase' \
+    --tasks 'bai_jailbreaks' \
     --include_path './winoreferral' \
     --seed $SGE_TASK_ID

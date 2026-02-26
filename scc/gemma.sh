@@ -4,10 +4,10 @@
 #$ -l h_rt=12:00:00
 #$ -l gpus=1
 #$ -l gpu_c=8.0
-#$ -l gpu_memory=40G
+#$ -l gpu_memory=80G
 #$ -N mh-eval-gemma
 #$ -j y
-#$ -o logs/gemma.log
+#$ -o logs/gemma_bai.log
 
 # Load conda module
 module load miniconda
@@ -24,6 +24,6 @@ export HF_HOME="/projectnb/ivc-ml/micahb/.cache/huggingface"
 # Run evaluation
 python lm_eval run \
     --config 'configs/gemma/gemma-3-12b.yaml' \
-    --tasks 'bai_rephrase' \
+    --tasks 'bai_jailbreaks' \
     --include_path './winoreferral' \
     --seed $SGE_TASK_ID
