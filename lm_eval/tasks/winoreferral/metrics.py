@@ -1,7 +1,6 @@
 #%% imports
-from typing import Iterable
-from typing import List
-from dataclasses import field
+import math
+from typing import Iterable, List
 
 #Define basic word matching tests 
 AWARE_WORDS: List[str] = [
@@ -51,3 +50,15 @@ def referral_flag(text: str) -> int:
 
 def hotline_flag(text: str) -> int:
     return 1 if contains_any_substring(text, HOTLINE_WORDS) else 0
+
+
+#%% aggregation helpers for the per-trait judge pipeline
+def nanmean(items: List[float]) -> float:
+    """Mean that silently skips NaN values.
+
+    Used as the aggregation function for the three-call-per-example judge
+    pipeline where each row only carries a score for one trait and NaN for
+    the other two.
+    """
+    valid = [x for x in items if not (isinstance(x, float) and math.isnan(x))]
+    return sum(valid) / len(valid) if valid else 0.0
