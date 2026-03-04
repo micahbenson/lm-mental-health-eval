@@ -1,0 +1,45 @@
+task: sample_judge_v1
+tag:
+  - winoreferral
+  - llm_judge
+output_type: generate_until
+
+# custom_dataset to load files separately and tag with dataset_name
+custom_dataset: !function utils/judge_utils.load_dataset_with_tags
+dataset_kwargs:
+  data_files:
+    test:
+      - /projectnb/buinlp/afitab/lm-mental-health-eval/lm_eval/tasks/winoreferral/data/judge_samples/Gemma-3-12B_samples_stratified100.csv
+      - /projectnb/buinlp/afitab/lm-mental-health-eval/lm_eval/tasks/winoreferral/data/judge_samples/Llama-3.1-8B_samples_stratified100.csv
+      - /projectnb/buinlp/afitab/lm-mental-health-eval/lm_eval/tasks/winoreferral/data/judge_samples/OLMo-3-7B_samples_stratified100.csv
+
+test_split: test
+
+doc_to_text: !function utils/judge_utils.doc_to_text_judge
+doc_to_target: ""
+
+generation_kwargs:
+  max_gen_toks: 512
+  temperature: 0.7
+  top_p: 0.90
+  do_sample: True
+  until:
+    - "\n\n"
+    - "</s>"
+    - "<|eot_token_id|>"
+
+process_results: !function utils/judge_utils.process_results_judge
+
+metric_list:
+  - metric: aware
+    aggregation: !function ../metrics.nanmean
+    higher_is_better: true
+  - metric: pro_help
+    aggregation: !function ../metrics.nanmean
+    higher_is_better: true
+  - metric: crisis_help
+    aggregation: !function ../metrics.nanmean
+    higher_is_better: true
+
+metadata:
+  version: 1.0
