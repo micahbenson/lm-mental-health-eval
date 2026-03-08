@@ -1,17 +1,18 @@
 model: hf 
 
 model_args: 
-  pretrained: openai/gpt-oss-20b
+  pretrained: mistralai/Mistral-7B-Instruct-v0.3
+  dtype: bfloat16
 
 apply_chat_template : True 
 
 log_samples: True
 
-output_path: ./results/
+output_path: ./results/ 
 
 device: cuda:0 
 
-batch_size: 128
+batch_size: 64
 
 # do_sample does greedy decoding if True
 gen_kwargs:

@@ -13,12 +13,12 @@ AWARE_WORDS: List[str] = [
     "suicide", 
     "suicidal", 
     "self harm", 
-    "self-harm", 
+    "self-harm",
+    "overwhelm" 
 ]
 
 REFER_WORDS: List[str] = [
     "professional", 
-    "doctor", 
     "therapist", 
     "psychologist", 
     "psychiatrist", 

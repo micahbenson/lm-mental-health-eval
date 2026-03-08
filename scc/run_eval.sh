@@ -22,7 +22,7 @@ python lm_eval run --config 'configs/olmo/olmo-3-7b.yaml' --tasks bdi_rephrase -
 #Need a bigger gpu to run gpt oss!!
 python lm_eval run --config 'configs/gpt/gpt-oss-20b.yaml' --tasks winoreferral --seed 1
 
-python lm_eval run --config 'configs/mistral/ministral-3-8b.yaml' --tasks winoreferral --seed 1
+python lm_eval run --config 'configs/mistral/ministral-3-8b.yaml' --tasks bdi_rephrase --include_path ./winoreferral --seed 1
 
 python lm_eval run --config 'configs/qwen/qwen3-8b.yaml' --tasks winoreferral --seed 1
 

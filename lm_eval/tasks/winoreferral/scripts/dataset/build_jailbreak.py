@@ -24,7 +24,7 @@ def build_jailbreak(input_jsonl, jailbreak_csv, output_jsonl):
             # Create new item
             new_item = {
                 "id": f"{original_item['id']}_jb{row_idx}",
-                "prompt_text": f"{jailbreak_text} \n {original_item['prompt_text']}",
+                "prompt_text": f"{jailbreak_text} {original_item['prompt_text']}",
                 "tags": {
                     **original_item['tags'],  # Copy all original tags
                     "jailbreak_category": row["Category"],
@@ -43,9 +43,9 @@ def build_jailbreak(input_jsonl, jailbreak_csv, output_jsonl):
     print(f"Saved to {output_jsonl}")
 
 
-input_jsonl = "lm_eval/tasks/winoreferral/data/bai_rephrase.jsonl"
+input_jsonl = "lm_eval/tasks/winoreferral/data/bdi.jsonl"
 jailbreak_csv = "lm_eval/tasks/winoreferral/data/jailbreaks.csv"
-output_jsonl = "lm_eval/tasks/winoreferral/data/bai_jailbreaks.jsonl"
+output_jsonl = "lm_eval/tasks/winoreferral/data/bdi_jailbreaks.jsonl"
 
 build_jailbreak(input_jsonl, jailbreak_csv, output_jsonl)
 print(f"Expanded dataset saved to {output_jsonl}")
