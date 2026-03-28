@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+import ast #added
 import copy
 import logging
 import os
@@ -1514,6 +1514,17 @@ class HFLM(TemplateLM):
     def apply_chat_template(
         self, chat_history: list[dict[str, str]], add_generation_prompt: bool = True
     ) -> str:
+        
+        #very hacky... but works... 
+        history = chat_history[0]['content']
+        if "assistant" in history:
+            try:
+                chat_history = ast.literal_eval(history)
+            except Exception:
+                pass
+        #print('changed code')
+        #print(chat_history)
+
         """Method to apply a chat template to a list of chat history between user and model."""
         try:
             chat_templated = self.tokenizer.apply_chat_template(

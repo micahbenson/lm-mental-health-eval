@@ -8,11 +8,13 @@ apply_chat_template : True
 
 log_samples: True
 
+predict_only: True
+
 output_path: ./results/ 
 
 device: cuda:0 
 
-batch_size: 32
+batch_size: 16
 
 # do_sample does greedy decoding if True
 gen_kwargs:

@@ -9,8 +9,8 @@ def build_context(input_csv, output_jsonl):
     context_df.to_json(output_jsonl, orient='records', lines=True)
 
 
-input_csv = "lm_eval/tasks/winoreferral/data/context.csv"
-output_jsonl = "lm_eval/tasks/winoreferral/data/context.jsonl"
+input_csv = "lm_eval/tasks/winoreferral/data/source/depression_context.csv"
+output_jsonl = "lm_eval/tasks/winoreferral/data/depression_context.jsonl"
 
 build_context(input_csv, output_jsonl)
 print(f"Expanded dataset saved to {output_jsonl}")

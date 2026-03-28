@@ -1,6 +1,9 @@
 #Set to your HF_HOME
 export HF_HOME="/projectnb/ivc-ml/micahb/.cache/huggingface"
 
+for script in scc/bdi_multi/*sh; do qsub "$script"; done
+
+
 lm_eval --model hf \
     --model_args pretrained=meta-llama/Llama-3.1-8B-Instruct \
     --tasks winoreferral \
@@ -16,8 +19,6 @@ python lm_eval run --config 'configs/llama/llama-3.1-8b.yaml' --tasks bdi_rephra
 python lm_eval run --config 'configs/gemma/gemma-3-12b.yaml' --tasks bdi_rephrase --include_path ./winoreferral --seed 1
 
 python lm_eval run --config 'configs/olmo/olmo-3-7b.yaml' --tasks bdi_rephrase --include_path ./winoreferral --seed 1
-
-
 
 #Need a bigger gpu to run gpt oss!!
 python lm_eval run --config 'configs/gpt/gpt-oss-20b.yaml' --tasks winoreferral --seed 1

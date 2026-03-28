@@ -44,7 +44,7 @@ def build_jailbreak(input_jsonl, jailbreak_csv, output_jsonl):
 
 
 input_jsonl = "lm_eval/tasks/winoreferral/data/bdi.jsonl"
-jailbreak_csv = "lm_eval/tasks/winoreferral/data/jailbreaks.csv"
+jailbreak_csv = "lm_eval/tasks/winoreferral/data/source/jailbreaks.csv"
 output_jsonl = "lm_eval/tasks/winoreferral/data/bdi_jailbreaks.jsonl"
 
 build_jailbreak(input_jsonl, jailbreak_csv, output_jsonl)
