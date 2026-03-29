@@ -7,7 +7,7 @@
 #$ -l gpu_memory=40G
 #$ -N qwen-a-multi
 #$ -j y
-#$ -o logs/qwen_a_multi.log
+#$ -o logs/qwen_a_multi1.log
 
 # Load conda module
 module load miniconda

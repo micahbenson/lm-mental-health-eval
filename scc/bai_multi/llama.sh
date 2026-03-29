@@ -7,7 +7,7 @@
 #$ -l gpu_memory=40G
 #$ -N llama-a-multi
 #$ -j y
-#$ -o logs/llama_a_multi.log
+#$ -o logs/llama_a_multi1.log
 
 # Load conda module
 module load miniconda

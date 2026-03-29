@@ -7,7 +7,7 @@
 #$ -l gpu_memory=40G
 #$ -N olmo-d-multi
 #$ -j y
-#$ -o logs/olmo_d_multi.log
+#$ -o logs/olmo_d_multi1.log
 
 # Load conda module
 module load miniconda

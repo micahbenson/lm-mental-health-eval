@@ -7,7 +7,7 @@
 #$ -l gpu_memory=40G
 #$ -N gpt-d-mulit
 #$ -j y
-#$ -o logs/gpt_d_multi.log
+#$ -o logs/gpt_d_multi1.log
 
 # Load conda module
 module load miniconda

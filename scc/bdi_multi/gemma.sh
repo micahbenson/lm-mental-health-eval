@@ -7,7 +7,7 @@
 #$ -l gpu_memory=80G
 #$ -N gemma-d-multi
 #$ -j y
-#$ -o logs/gemma_d_multi.log
+#$ -o logs/gemma_d_multi1.log
 
 # Load conda module
 module load miniconda

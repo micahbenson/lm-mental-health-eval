@@ -7,7 +7,7 @@
 #$ -l gpu_memory=40G
 #$ -N mistral-a-multi
 #$ -j y
-#$ -o logs/mistral_a_multi.log
+#$ -o logs/mistral_a_multi1.log
 
 # Load conda module
 module load miniconda
