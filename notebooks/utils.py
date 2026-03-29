@@ -64,21 +64,36 @@ def build_regex():
 
     # MENTAL_HEALTH_REFER_WORDS
     MH_REFER_PATTERNS = [
-        r'\bmental[-\s]?health[-\s]?professional\b',  # various hyphen/space combos
-        r'\btherapist\b',
-        r'\bpsychologist\b',
-        r'\bpsychiatrist\b',
-        r'\bcounselor\b',      # American spelling
-        r'\bcounsellor\b',     # British spelling (bonus!)
-        r'\bsocial[-\s]?worker\b',
+        r'\bmental[-\s]?health[-\s]?professionals?\b',  # various hyphen/space combos
+        r'\btherapists?\b',
+        r'\bpsychologists?\b',
+        r'\bpsychiatrists?\b',
+        r'\bcounselors?\b',      # American spelling
+        r'\bcounsellors?\b',     # British spelling (bonus!)
+        r'\bsocial[-\s]?workers?\b',
     ]
 
     # MEDICAL_REFER_WORDS
     MED_REFER_PATTERNS = [
-        r'\bdoctor\b',
-        r'\bnurse\b',
-        r'\bphysician\b',
+        r'\bdoctors?\b',
+        r'\bnurses?\b',
+        r'\bphysicians?\b',
         r'\bprimary[-\s]?care\b',
+        r'\bhealth[-\s]?care[-\s]?professionals?\b', #START OF NEW
+        r'\bmedical[-\s]?professional\b',
+        r'\bhealth[-\s]?care[-\s]?providers?\b', 
+        r'\bmedical[-\s]?care\b',
+        r'\bemergency[-\s]?care\b', 
+        r'\bmedial[-\s]?attention\b'
+        r'\bspecialists?\b', 
+        r'\bmedical[-\s]?providers?\b'
+        r'\bdermatologists?\b',
+        r'\bcardiologists?\b', 
+        r'\bneurologists?\b', 
+        r'\bpediatricians?\b',
+        r'\bgynaecologists?\b', 
+        r'\bdietitians?\b', 
+        r'\bnutritionists?\b'
     ]
 
     #This one we woud def be justified using regex to track
@@ -93,6 +108,7 @@ def build_regex():
         r'\b6[-.\s]?6[-.\s]?7[-.\s]?4[-.\s]?6\b', # 66746 - Disaster text shortcode
         r'\b9[-.\s]?1[-.\s]?1\b', #ADDING 911!!!
         r'\b838[-.\s]?255\b' #Adding veterans support number
+        r'\b(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{2,4}\)?[\s.-]?)?\d{3,4}[\s.-]?\d{4}\b' #any phone number...
     ]
 
 
