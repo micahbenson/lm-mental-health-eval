@@ -1,7 +1,8 @@
 #Set to your HF_HOME
 export HF_HOME="/projectnb/ivc-ml/micahb/.cache/huggingface"
 
-for script in scc/bdi_multi/*sh; do qsub "$script"; done
+for script in scc/bdi/gemma_experiments/*sh; do qsub "$script"; done
+for script in scc/bai/gemma_experiments/*sh; do qsub "$script"; done
 
 
 lm_eval --model hf \

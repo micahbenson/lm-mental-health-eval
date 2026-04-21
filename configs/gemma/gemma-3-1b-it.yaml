@@ -1,7 +1,8 @@
 model: hf 
 
 model_args: 
-  pretrained: openai/gpt-oss-20b
+    pretrained: google/gemma-3-1b-it
+    dtype: bfloat16
 
 apply_chat_template : True 
 
@@ -9,17 +10,18 @@ log_samples: True
 
 predict_only: True
 
-output_path: ./results/
+output_path: ./results/gemma_experiments/
 
 device: cuda:0 
 
-batch_size: 4
+batch_size: 108
 
 # do_sample does greedy decoding if True
 gen_kwargs:
   temperature: 0.7
   top_p: 0.9
-  max_new_tokens: 2047
   do_sample: True
+  max_new_tokens: 2047
   until:
   - "</s>"
+  - "<end_of_turn>\n"

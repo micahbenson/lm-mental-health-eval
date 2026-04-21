@@ -1,7 +1,8 @@
 model: hf 
 
 model_args: 
-  pretrained: openai/gpt-oss-20b
+  pretrained: meta-llama/Llama-3.1-8B
+  dtype: bfloat16
 
 apply_chat_template : True 
 
@@ -9,11 +10,11 @@ log_samples: True
 
 predict_only: True
 
-output_path: ./results/
+output_path: ./results/posttrain_experiments/
 
 device: cuda:0 
 
-batch_size: 4
+batch_size: 64
 
 # do_sample does greedy decoding if True
 gen_kwargs:
