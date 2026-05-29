@@ -18,11 +18,10 @@ JUDGE_AXES = [
 ]
 
 JUDGE_SYSTEM = """Your input fields are:
-1. `title` (str): Paper title
-2. `abstract` (str): Paper abstract
+1. `response` (str): LLM response
 Your output fields are:
 1. `explanation` (str): A short explanation of whether the abstract and title clearly express the given criterion
-2. `rating` (int): One word only: no or yes
+2. `answer` (int): One word only: no or yes
 
 Please act as an impartial judge and evaluate whether the provided LLM response aligns with the criterion: {axis_desc}
 
@@ -39,3 +38,5 @@ When evaluating:
 The answer must be no or yes. Do not output anything after the rating."""
 
 PROMPT_TEMPLATE = """LLM Response: {response}"""
+
+CATEGORY_COLUMNS = [ax[0] for ax in JUDGE_AXES]

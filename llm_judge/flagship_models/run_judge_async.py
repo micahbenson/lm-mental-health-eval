@@ -5,10 +5,8 @@ import json
 import os
 import re
 import time
-import unicodedata
 from pathlib import Path
 
-import pandas as pd
 from openai import AsyncOpenAI
 from anthropic import AsyncAnthropic
 
@@ -26,28 +24,23 @@ def get_provider(model: str) -> str:
     return "openai"
 
 
-def build_prompt_records(papers: list[dict]) -> list[dict]:
+def build_prompt_records(items: list[dict]) -> list[dict]:
     records = []
 
-    for paper_idx, paper in enumerate(papers):
+    for item_idx, item in enumerate(items):
         for axis_key, axis_desc, evaluation_guidelines in prompts.JUDGE_AXES:
             system_prompt = prompts.JUDGE_SYSTEM.format(
                 axis_desc=axis_desc,
                 evaluation_guidelines=evaluation_guidelines,
             )
             user_prompt = prompts.PROMPT_TEMPLATE.format(
-                title=paper["title"],
-                abstract=paper["abstract"],
+                response=item["response"],
             )
 
             records.append({
-                "paper_index": paper_idx,
-                "paper_key": paper["key"],
-                "year": paper["year"],
-                "title": paper["title"],
-                "abstract": paper["abstract"],
-                # "venue": paper["venue"],
-                # "award": paper["award"],
+                "item_index": item_idx,
+                "item_id": item["id"],
+                "response": item["response"],
                 "axis_key": axis_key,
                 "system_prompt": system_prompt,
                 "user_prompt": user_prompt,
@@ -56,31 +49,15 @@ def build_prompt_records(papers: list[dict]) -> list[dict]:
     return records
 
 
-def extract_rating(text: str) -> int | None:
+def extract_rating(text: str) -> str | None:
     if not text:
         return None
 
-    if "[[ ## rating ## ]]" in text:
-        return extract_rating_dspy(text)
-
-    match = re.search(r"Rating:\s*\[\[(0|1|2)\]\]", text)
+    match = re.search(r"Rating:\s*\[\[(yes|no)\]\]", text, re.IGNORECASE)
     if match:
-        return int(match.group(1))
+        return match.group(1).lower()
 
     return None
-
-
-def extract_rating_dspy(text: str) -> int | None:
-    if not text:
-        return None
-
-    if "[[ ## rating ## ]]" in text.lower():
-        tail = text.lower().split("[[ ## rating ## ]]")[-1]
-    else:
-        tail = text.split(":")[-1]
-    pattern = r"[012]"
-    m = re.search(pattern, tail)
-    return int(m.group()) if m else None
 
 
 # =========================
@@ -230,84 +207,32 @@ def save_jsonl(rows: list[dict], output_path: str | Path) -> None:
 
 
 def save_wide_ratings_csv(rows: list[dict], output_path: str | Path) -> None:
-    """
-    Saves one row per paper:
-
-    ID, Title, Abstract, year,
-    benchmark_sota_framing,
-    language_specific,
-    linguistic_phenomenon,
-    llm_as_object,
-    reasoning_cognition_claims,
-    societal_impact
-
-    Axis columns contain the extracted rating.
-    """
+    """Saves one row per response: id, mental_health_referral, healthcare_referral, hotline."""
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    axis_columns = [
-        "benchmark_sota_framing",
-        "language_specific",
-        "linguistic_phenomenon",
-        "llm_as_object",
-        "reasoning_cognition_claims",
-        "societal_impact",
-    ]
+    axis_columns = [ax[0] for ax in prompts.JUDGE_AXES]
 
-    paper_rows = {}
+    item_rows: dict[str, dict] = {}
 
     for row in rows:
         if row is None:
             continue
-        paper_id = row.get("paper_key", "")
+        item_id = row.get("item_id", "")
 
-        if paper_id not in paper_rows:
-            paper_rows[paper_id] = {
-                "ID": paper_id,
-                "Title": row.get("title", ""),
-                "Abstract": row.get("abstract", ""),
-                "year": row.get("year", ""),
-                "benchmark_sota_framing": "",
-                "language_specific": "",
-                "linguistic_phenomenon": "",
-                "llm_as_object": "",
-                "reasoning_cognition_claims": "",
-                "societal_impact": "",
-            }
+        if item_id not in item_rows:
+            item_rows[item_id] = {"id": item_id, **{ax: "" for ax in axis_columns}}
 
         axis_key = row.get("axis_key", "")
         if axis_key in axis_columns:
-            paper_rows[paper_id][axis_key] = row.get("rating", "")
+            item_rows[item_id][axis_key] = row.get("rating", "")
 
-    wide_rows = list(paper_rows.values())
+    wide_rows = list(item_rows.values())
 
     with open(output_path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(
-            f,
-            fieldnames=[
-                "ID",
-                "Title",
-                "Abstract",
-                "year",
-                "benchmark_sota_framing",
-                "language_specific",
-                "linguistic_phenomenon",
-                "llm_as_object",
-                "reasoning_cognition_claims",
-                "societal_impact",
-            ],
-        )
+        writer = csv.DictWriter(f, fieldnames=["id"] + axis_columns)
         writer.writeheader()
         writer.writerows(wide_rows)
-
-
-def _bib_stem(bibfile: Path) -> str:
-    bib_name = bibfile.name
-    for suffix in (".bib.gz", ".bib.txt", ".bib", ".csv"):
-        if bib_name.endswith(suffix):
-            return bib_name[: -len(suffix)]
-    return bibfile.stem
 
 
 # =========================
@@ -331,19 +256,6 @@ def parse_args() -> argparse.Namespace:
         type=str,
         default="outputs/judge_results.csv",
         help="Path to output directory.",
-    )
-
-    parser.add_argument(
-        "--venues",
-        type=str,
-        default="acl,naacl,emnlp,eacl,aacl,tacl",
-        help="Venues to include.",
-    )
-
-    parser.add_argument(
-        "--include-findings",
-        action="store_true",
-        help="Include findings.",
     )
 
     parser.add_argument(
@@ -375,7 +287,7 @@ def parse_args() -> argparse.Namespace:
         "--limit",
         type=int,
         default=None,
-        help="Number of papers to process. If omitted, processes all papers.",
+        help="Number of responses to process. If omitted, processes all responses.",
     )
 
     parser.add_argument(
@@ -518,41 +430,27 @@ async def main_async() -> None:
 
     client, provider = build_client(args)
 
-    if ".bib" in args.input_csv:
-        venues = [v.strip() for v in args.venues.split(",") if v.strip()]
-        matcher = load_dataset.build_venue_matcher(venues, args.include_findings)
-        print("Venue filter: %s (findings=%s)", venues, args.include_findings)
-        papers = load_dataset.parse_bib(Path(args.input_csv), matcher, limit=args.limit)
+    items = load_dataset.load_responses_csv(args.input_csv, limit=args.limit)
 
-    elif ".csv" in args.input_csv:
-        papers = load_dataset.load_csv(args.input_csv, limit=args.limit)
-
-    else:
-        raise ValueError(
-            f"Unsupported input file (must be .csv or .bib): {args.input_csv}"
-        )
-
-    if not papers:
-        print("No papers with abstracts after filtering. Aborting.")
+    if not items:
+        print("No responses found in input file. Aborting.")
         raise SystemExit(1)
 
-    records = build_prompt_records(papers)
+    records = build_prompt_records(items)
 
     if args.max_calls is not None:
         records = records[:args.max_calls]
 
     print(f"Prepared {len(records)} prompt calls.")
     print(f"Mode: {args.mode}")
-    # print(f"Prompt version: {args.prompt_version}")
-    # print(f"Provider: {provider}")
     print(f"Model: {args.model}")
     print(f"Concurrency: {args.concurrency}")
     print(f"Output: {args.output}")
 
-    bib_stem = _bib_stem(Path(args.input_csv))
+    input_stem = Path(args.input_csv).stem
     outdir = Path(args.output)
     outdir.mkdir(parents=True, exist_ok=True)
-    output = outdir / f"{bib_stem}_per_paper_judge.csv"
+    output = outdir / f"{input_stem}_judge.csv"
     print(f"Output file path: {output}")
 
     # Pre-allocate results slot per call so final output is in original order
@@ -581,7 +479,7 @@ async def main_async() -> None:
 
             print(
                 f"[{completed}/{len(records)}] "
-                f"{row.get('paper_key', '')} | {row.get('axis_key', '')} | "
+                f"{row.get('item_id', '')} | {row.get('axis_key', '')} | "
                 f"tokens={row.get('input_tokens', '')} | "
                 f"rating={row.get('rating', '')} | "
                 f"error={bool(row['error'])} | "
