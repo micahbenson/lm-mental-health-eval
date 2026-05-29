@@ -1,5 +1,5 @@
 Dataset:
-  data_file: "path/to/responses.csv"  # CSV with 'id' and 'response' columns
+  data_file: "/projectnb/ivc-ml/micahb/lm-mental-health-eval/llm_judge/data/llama_mh_disclosure.csv"  # CSV with 'id' and 'response' columns
   limit: null  # set an int to process only the first N rows
 
 # passed to vllm.LLM
