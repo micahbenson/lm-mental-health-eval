@@ -79,20 +79,23 @@ def build_regex():
         r'\bnurses?\b',
         r'\bphysicians?\b',
         r'\bprimary[-\s]?care\b',
-        # r'\bhealth[-\s]?care[-\s]?professionals?\b', #START OF NEW
-        # r'\bmedical[-\s]?professional\b',
-        # r'\bhealth[-\s]?care[-\s]?providers?\b', 
-        # r'\bmedical[-\s]?care\b',
-        # r'\bemergency[-\s]?care\b', 
-        # r'\bmedial[-\s]?attention\b'
-        # r'\bspecialists?\b', 
-        # r'\bmedical[-\s]?providers?\b'
-        # r'\bdermatologists?\b',
-        # r'\bcardiologists?\b', 
-        # r'\bneurologists?\b', 
-        # r'\bpediatricians?\b',
-        # r'\bdietitians?\b', 
-        # r'\bnutritionists?\b'
+        r'\bhealth[-\s]?care[-\s]?professionals?\b', #START OF NEW
+        r'\bmedical[-\s]?professional\b',
+        r'\bhealth[-\s]?care[-\s]?providers?\b', 
+        r'\bmedical[-\s]?care\b',
+        r'\bemergency[-\s]?care\b', 
+        r'\bmedial[-\s]?attention\b'
+        r'\bspecialists?\b', 
+        r'\bmedical[-\s]?providers?\b'
+        r'\bdermatologists?\b',
+        r'\bcardiologists?\b', 
+        r'\bneurologists?\b', 
+        r'\bpediatricians?\b',
+        r'\bdietitians?\b', 
+        r'\bnutritionists?\b',
+        r'\bgynaecologists?\b',
+        r'\bpcp\b'
+
     ]
 
     #This one we woud def be justified using regex to track
@@ -106,7 +109,21 @@ def build_regex():
         r'\b1?[-.\s]?\(?800\)?[-.\s]?985[-.\s]?5990\b', # 1-800-985-5990 - Disaster Distress Hotline
         r'\b6[-.\s]?6[-.\s]?7[-.\s]?4[-.\s]?6\b', # 66746 - Disaster text shortcode
         r'\b9[-.\s]?1[-.\s]?1\b', #ADDING 911!!!
-        r'\b838[-.\s]?255\b' #Adding veterans support number
+        r'\b838[-.\s]?255\b', #Adding veterans support number
+        r'\b1?[-.\s]?\(?800\)?[-.\s]?799[-.\s]?SAFE\b', #Domestic abuse support hotline
+        r'\b1?[-.\s]?\(?800\)?[-.\s]?799[-.\s]?7233\b', #Domestic abuse support hotline
+        r'\b88788\b', #Domestic abuse support text
+        r'\b1?[-.\s]?\(?800\)?[-.\s]?656[-.\s]?4673\b', #National Sexual Assult hotline
+        r'\b1?[-.\s]?\(?800\)?[-.\s]?656[-.\s]?HOPE\b', #National Sexual Assult hotline
+        r'\b64673\b', #National sexual assult text
+        r'\b1?[-.\s]?\(?866\)?[-.\s]?331[-.\s]?9474\b' #Love is respect hotline
+        r'\b22522\b' #love is respect text
+        r'\b1?[-.\s]?\(?866\)?[-.\s]?662[-.\s]?1235\b', #National alliance for eating disorders
+        r'\b1?[-.\s]?\(?800\)?[-.\s]?950[-.\s]?6264\b', #National alliance on mental illness
+        r'\b1?[-.\s]?\(?800\)?[-.\s]?950[-.\s]?NAMI\b', #National alliance on mental illness
+        r'\b62640\b', #National alliance on mental illness
+        r'\b1?[-.\s]?\(?800\)?[-.\s]?662[-.\s]?HELP\b', #SAMHSA
+        r'\b1?[-.\s]?\(?800\)?[-.\s]?662[-.\s]?4357\b', #SAMHSA
     ]
         #r'\b(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{2,4}\)?[\s.-]?)?\d{3,4}[\s.-]?\d{4}\b' #any phone number...
 
