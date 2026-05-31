@@ -65,7 +65,7 @@ def build_regex():
     # MENTAL_HEALTH_REFER_WORDS
     MH_REFER_PATTERNS = [
         r'\bmental[-\s]?health[-\s]?professionals?\b', 
-        r'\btherapists?\b',
+        r'\b(?<!physical\s)(?<!occupational\s)therapists?\b',
         r'\bpsychologists?\b',
         r'\bpsychiatrists?\b',
         r'\bcounselors?\b',    
@@ -84,18 +84,19 @@ def build_regex():
         r'\bhealth[-\s]?care[-\s]?providers?\b', 
         r'\bmedical[-\s]?care\b',
         r'\bemergency[-\s]?care\b', 
-        r'\bmedial[-\s]?attention\b'
+        r'\bmedical[-\s]?attention\b',
         r'\bspecialists?\b', 
-        r'\bmedical[-\s]?providers?\b'
+        r'\bmedical[-\s]?providers?\b',
         r'\bdermatologists?\b',
         r'\bcardiologists?\b', 
         r'\bneurologists?\b', 
         r'\bpediatricians?\b',
         r'\bdietitians?\b', 
         r'\bnutritionists?\b',
-        r'\bgynaecologists?\b',
-        r'\bpcp\b'
-
+        r'\bgyn[ae]cologists?\b',
+        r'\bpcp\b', 
+        r'\bphysical[-\s]?therapists?\b',
+        r'\boccupational[-\s]?therapists?\b'
     ]
 
     #This one we woud def be justified using regex to track
@@ -104,6 +105,7 @@ def build_regex():
         r'\b1?[-.\s]?\(?800\)?[-.\s]?273[-.\s]?TALK\b', # 1-800-273-TALK - Old US Suicide hotline with letters
         r'\b1?[-.\s]?\(?800\)?[-.\s]?273[-.\s]?8255\b', # 1-800-273-8255 - Old US Suicide hotline numeric
         r'\b1[-.\s]?1[-.\s]?1\b', # 111 - UK Hotline
+        r'\b116[-.\s]?123\b', #Samaritians UK
         r'\b741[-.\s]?741\b', # 741741 - Crisis Text Line
         r'\b1?[-.\s]?\(?866\)?[-.\s]?488[-.\s]?7386\b', # 866-488-7386 - Trevor Project
         r'\b1?[-.\s]?\(?800\)?[-.\s]?985[-.\s]?5990\b', # 1-800-985-5990 - Disaster Distress Hotline
@@ -125,8 +127,17 @@ def build_regex():
         r'\b1?[-.\s]?\(?800\)?[-.\s]?662[-.\s]?HELP\b', #SAMHSA
         r'\b1?[-.\s]?\(?800\)?[-.\s]?662[-.\s]?4357\b', #SAMHSA
     ]
-        #r'\b(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{2,4}\)?[\s.-]?)?\d{3,4}[\s.-]?\d{4}\b' #any phone number...
-
+    
+    PHONE_PATTERNS = [
+        r'\b(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{2,4}\)?[\s.-]?)?\d{3,4}[\s.-]?\d{4}\b', #any phone number...
+        #r'\b\d{3}\b', 
+        #r'\b\d{4}\b',
+        r'\b\d{5}\b', 
+        r'\b\d{6}\b',
+        r'\b9[-.\s]?8[-.\s]?8\b',
+        r'\b1[-.\s]?1[-.\s]?1\b',
+        r'\b9[-.\s]?1[-.\s]?1\b',
+    ]
 
     # Combine all referral patterns
     REFER_PATTERNS = MH_REFER_PATTERNS + MED_REFER_PATTERNS
@@ -145,6 +156,7 @@ def build_regex():
 
     COMPILED_HOTLINE = [re.compile(p, re.IGNORECASE) for p in HOTLINE_PATTERNS]
 
+    COMPILED_PHONE = [re.compile(p, re.IGNORECASE) for p in PHONE_PATTERNS]
 
     # Define all pattern groups
     pattern_groups = {
@@ -157,6 +169,7 @@ def build_regex():
         'refer_mh': COMPILED_MH_REFER,
         'refer': COMPILED_REFER,
         'hotline': COMPILED_HOTLINE,
+        'phone' : COMPILED_PHONE,
     }
     return pattern_groups
 
