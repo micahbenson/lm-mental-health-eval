@@ -8,8 +8,10 @@ LLM:
   tensor_parallel_size: 1
   gpu_memory_utilization: 0.9
   max_model_len: 8096
+  max_num_seqs: 512
   seed: 1
   enable_lora: false
+#  quantization: "fp8" #added
 
 # passed to vllm.SamplingParams
 sampling_params:
