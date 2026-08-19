@@ -1,0 +1,26 @@
+model: hf 
+
+model_args: 
+  pretrained: meta-llama/Llama-3.1-8B
+  dtype: bfloat16
+
+apply_chat_template : True 
+
+log_samples: True
+
+predict_only: True
+
+output_path: ./results/posttrain_experiments/
+
+device: cuda:0 
+
+batch_size: 64
+
+# do_sample does greedy decoding if True
+gen_kwargs:
+  temperature: 0.7
+  top_p: 0.9
+  max_new_tokens: 2047
+  do_sample: True
+  until:
+  - "</s>"

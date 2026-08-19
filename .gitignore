@@ -1,3 +1,8 @@
+clean_data
+sample_data
+clean_data_revision
+surveys
+
 # macOS system files
 .DS_Store
 

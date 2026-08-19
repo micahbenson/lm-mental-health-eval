@@ -1,0 +1,51 @@
+Dataset:
+  data_file: "../splits/anthology_splits/anthology_split_12.bib.gz"
+  venues: "acl,naacl,emnlp"
+  include_findings: true
+  sample_per_year: null  # set an int to subsample per year
+
+# passed to vllm.LLM 
+LLM:
+  model: "Qwen/Qwen3.6-27B" # can be a path
+  tensor_parallel_size: 1 # Number of GPUs used. Passed to vllm.LLM.tensor_parallel_size. 
+  gpu_memory_utilization: 0.9 # Fraction of gpu memory reserved for model + attention
+  max_model_len: 8096
+  # distributed_executor_backend: 'mp'
+  seed: 1 # seed to initialize RNG for sampling
+  enable_lora: false
+
+# passed to vllm.SamplingParams
+# With thinking
+# sampling_params:
+#   n: 1 # Number of sequences to generate per prompt
+#   temperature: 1.0  # Temperature for generation
+#   top_p: 0.95  # Top-p for generation
+#   top_k: 20
+#   min_p: 0.0
+#   presence_penalty: 1.5
+#   repetition_penalty: 1.0
+#   max_tokens: 20000
+
+# Non-thinking
+sampling_params:
+  n: 1 # Number of sequences to generate per prompt
+  temperature: 0.7  # Temperature for generation
+  top_p: 0.8  # Top-p for generation
+  top_k: 20
+  min_p: 0.0
+  presence_penalty: 1.5
+  repetition_penalty: 1.0
+  max_tokens: 4096
+
+judge:
+  binary_prompt: false
+  max_papers: null  # set e.g. 100 
+  skip: false
+  enable_thinking: false
+  enable_thinking_argument: "enable_thinking"
+  use_system_prompt: false
+  use_dspy_prompts: true
+
+output:
+  result_dir: "../results_abstract/qwen36_27B/anthology"
+  suffix: "_dspy"

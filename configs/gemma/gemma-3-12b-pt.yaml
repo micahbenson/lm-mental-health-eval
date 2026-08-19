@@ -1,0 +1,28 @@
+model: hf 
+
+#PRETRAINED!!!
+model_args: 
+    pretrained: google/gemma-3-12b-pt
+    dtype: bfloat16
+
+apply_chat_template : True 
+
+log_samples: True
+
+predict_only: True
+
+output_path: ./results/gemma_experiments/
+
+device: cuda:0 
+
+batch_size: 32
+
+# do_sample does greedy decoding if True
+gen_kwargs:
+  temperature: 0.7
+  top_p: 0.9
+  do_sample: True
+  max_new_tokens: 2047
+  until:
+  - "</s>"
+  - "<end_of_turn>\n"

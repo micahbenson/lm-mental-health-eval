@@ -1,0 +1,57 @@
+Dataset:
+  bibfile: "../splits/anthology_split_00.bib.gz"
+  venues: "acl,naacl,emnlp"
+  include_findings: true
+  sample_per_year: null  # set an int to subsample per year
+
+# passed to vllm.LLM
+LLM:
+  model: "mistralai/Mistral-Small-4-119B-2603"
+
+  # Recommended for Mistral-format models in vLLM
+  tokenizer_mode: "mistral"
+  config_format: "mistral"
+  load_format: "mistral"
+
+  # Disables image/Pixtral multimodal profiling path.
+  limit_mm_per_prompt:
+    image: 0
+
+  # Single GPU
+  tensor_parallel_size: 1
+
+  # Conservative startup settings. Increase only after it loads.
+  gpu_memory_utilization: 0.95
+  max_model_len: 8192
+  # max_num_batched_tokens: 2048
+  # max_num_seqs: 1
+
+  # Mistral Small 4 uses MLA; model card recommends FLASH_ATTN_MLA for FP8.
+  attention_backend: "FLASH_ATTN_MLA"
+
+  seed: 1
+  enable_lora: false
+
+# passed to vllm.SamplingParams
+sampling_params:
+  n: 1
+  temperature: 0.15
+  top_p: 1.0
+  top_k: -1
+  min_p: 0.0
+  # presence_penalty: 0.0
+  # repetition_penalty: 1.0
+  max_tokens: 2048
+
+judge:
+  binary_prompt: false
+  max_papers: null
+  skip: false
+  use_system_prompt: false
+
+  # Mistral Small 4 uses "reasoning_effort".
+  enable_thinking: "none"
+  enable_thinking_argument: "reasoning_effort"
+
+output:
+  result_dir: "../results_abstract/mistral_small_4_119B"

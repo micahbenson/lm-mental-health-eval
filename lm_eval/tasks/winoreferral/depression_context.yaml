@@ -1,7 +1,7 @@
 task: depression_context
 tag:
   - winoreferral
-  - depression
+  - anxiety
   - ambiguous
 output_type: generate_until
 
@@ -26,6 +26,6 @@ metric_list:
   - metric: hotline_rate 
     aggregation: mean 
     higher_is_better: false
-
+    
 metadata:
   version: 1.0

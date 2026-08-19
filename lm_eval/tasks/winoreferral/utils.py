@@ -27,6 +27,33 @@ def doc_to_text(doc: Dict[str, Any]) -> str:
     # Need to update if we want to add more context to the prompt, or some sort of wrapper
     return get_prompt(doc)
 
+#For the persona system prompts
+def doc_to_messages(doc):
+    """
+    Convert document to messages format that will be passed to chat template.
+    Returns a list of message dictionaries.
+    """
+    messages = []
+    
+    # Add system prompt if present
+    messages.append({
+        "role": "user",
+        "content": doc["user_text"]
+    })
+
+    # Add user prompt
+    messages.append({
+        "role": "assistant",
+        "content": doc["assistant_text"]
+    })
+
+    messages.append({
+        "role": "user",
+        "content": doc["prompt_text"]
+    })
+
+    return str(messages)
+
 def process_results(doc: Dict[str, Any], results: List[str]) -> Dict[str, float]:
     output = results[0] if results else ""
 
