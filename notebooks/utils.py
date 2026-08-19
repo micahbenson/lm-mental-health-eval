@@ -231,6 +231,21 @@ def clean_df(df, pattern_groups):
     df = add_analysis_cols(df, pattern_groups)
     return df 
 
+def clean_df_closed_context(df, pattern_groups): 
+    # Normalize nested columns
+    df['prompt_id'] = df['id']
+    df['disorder'] = df['tags'].apply(lambda x: x['disorder'])
+    df['symptom'] = df['tags'].apply(lambda x: x['symptom'])
+    df['severity'] = df['tags'].apply(lambda x: x['severity'])
+    df['round'] = df['tags'].apply(lambda x: x['rephrase_source'])
+    df['response'] = df['round_2'].apply(lambda x: x['response'])
+    df['context_type'] = df['tags'].apply(lambda x: x['context_type'])
+
+    #Cutting out the original BDI statements because they're off distribution
+    df = df[df['round']!='original_text']
+    df = add_analysis_cols(df, pattern_groups)
+    return df 
+
 
 def plot_grouped_bar(
     models: Dict[List[str], List[pd.DataFrame]],

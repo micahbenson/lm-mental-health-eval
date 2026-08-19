@@ -9,16 +9,28 @@
 # you should login using "huggingface-cli login" before running this script
 
 # Requesting resources from SCC
-#$ -P vkolagrp
-#$ -l h_rt=2:00:00
+#$ -P ivc-ml
+#$ -cwd
+#$ -l h_rt=12:00:00
 #$ -pe omp 8
-#$ -l mem_per_core=2G
+#$ -l mem_per_core=4G
 #$ -l gpus=1
-#$ -l gpu_c=9 # GPU capability, must be at least 8 for this project
+#$ -l gpu_c=8.0
+#$ -l gpu_memory=80G
 #$ -m bea
-#$ -l gpu_type=H200
-#$ -e logs/$JOB_ID.stderr
-#$ -o logs/$JOB_ID.stdout
+#$ -j y
+#$ -o logs/$JOB_ID.log
+
+# Load conda module
+module load miniconda
+
+# Initialize conda for bash shell
+eval "$(conda shell.bash hook)"
+
+# Activate your environment
+conda activate lm-mental-health
+module load cuda
+module load gcc
 
 # Check that exactly one config file was passed
 if [ "$#" -ne 1 ]; then
@@ -28,21 +40,16 @@ fi
 
 # module load python3
 
-# conda init
-conda activate /projectnb/vkolagrp/skowshik/conda_envs/position_paper
-module load cuda
-module load gcc
-
-export HF_HOME=/projectnb/vkolagrp/skowshik/.cache
-export VLLM_CACHE_ROOT=/projectnb/vkolagrp/skowshik/.cache
-export UV_CACHE_DIR=/projectnb/vkolagrp/skowshik/.cache
-export FLASHINFER_WORKSPACE_BASE=/projectnb/vkolagrp/skowshik/.cache
-
+export HF_HOME=/projectnb/ivc-ml/micahb/.cache/huggingface
+export TRITON_CACHE_DIR=/projectnb/ivc-ml/micahb/.cache/triton
+export TORCHINDUCTOR_CACHE_DIR=/projectnb/ivc-ml/micahb/.cache/inductor
+export VLLM_CACHE_ROOT=/projectnb/ivc-ml/micahb/.cache/vllm
+export XDG_CACHE_HOME=/projectnb/ivc-ml/micahb/.cache
 # If this env var is set to 1, vLLM will skip the peer-to-peer check,
 # and trust the driver's peer-to-peer capability report. Use this if using more than one gpu
 # export VLLM_SKIP_P2P_CHECK=1
 
 python -V
 
-python main.py config_file=$1
+python /projectnb/ivc-ml/micahb/lm-mental-health-eval/llm_judge/vllm_eval/main.py config_file=$1
 

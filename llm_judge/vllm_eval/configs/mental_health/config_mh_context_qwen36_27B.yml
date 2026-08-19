@@ -1,0 +1,35 @@
+Dataset:
+  data_file: "/projectnb/ivc-ml/micahb/lm-mental-health-eval/llm_judge/data/mh_context.csv"  # CSV with 'id' and 'response' columns
+  limit: null  # set an int to process only the first N rows
+
+# passed to vllm.LLM
+LLM:
+  model: "Qwen/Qwen3.6-27B"  # can be a local path
+  tensor_parallel_size: 1
+  gpu_memory_utilization: 0.9
+  max_model_len: 8096
+  max_num_seqs: 512
+  seed: 1
+  enable_lora: false
+#  quantization: "fp8" #added
+
+# passed to vllm.SamplingParams
+sampling_params:
+  n: 1
+  temperature: 0.7
+  top_p: 0.8
+  top_k: 20
+  min_p: 0.0
+  presence_penalty: 1.5
+  repetition_penalty: 1.0
+  max_tokens: 4096
+
+judge:
+  max_items: null  # set e.g. 100 to limit rows processed
+  skip: false
+  enable_thinking: false
+  enable_thinking_argument: "enable_thinking"
+
+output:
+  result_dir: "../results/mental_health/qwen36_27B"
+  suffix: ""
